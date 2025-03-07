@@ -2,14 +2,13 @@ import requests
 import xmltodict
 from bs4 import BeautifulSoup
 from celery import Celery
-from sqlalchemy import create_engine
 
 BASE_URL = "https://zakupki.gov.ru/epz/order/extendedsearch/results.html"
 XML_BASE_URL = "https://zakupki.gov.ru/epz/order/notice/printForm/viewXml.html?regNumber="
 
 # Создаем приложение Celery, работающее в eager-режиме
-# app = Celery('tasks', broker='memory://', backend='rpc://', task_always_eager=True)
-app = Celery('tasks', broker='sqla+sqlite:///celerydb.sqlite', backend='db+sqlite:///results.sqlite')
+app = Celery('tasks', broker='memory://', backend='rpc://', task_always_eager=True)
+
 
 @app.task
 def fetch_tender_links(page_number):
